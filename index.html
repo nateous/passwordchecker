@@ -1,0 +1,51 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Password Checker</title>
+</head>
+
+<body>
+    <h1>Password Checker</h1>
+    <h2>Enter password below:</h2>
+    <div id="container">
+        <label>
+            <input type="password" id="password">
+            <span id="warning"></span>
+        </label>
+        <ul id="list"></ul>
+    </div>
+    <script type="text/javascript">
+        var password = document.getElementById('password');
+        var list = document.getElementById('list');
+        var warning = document.getElementById('warning');
+        var rules = [
+            { re: /asdf/, rule: 'must be asdf', warning: 'only passwords that are asdf are really secure' },
+            { re: /.{4,}/, rule: 'must be at least 4 characters' }
+        ];
+        rules.forEach((r) => {
+            let item = document.createElement('li');
+            item.classList.add('item');
+            item.innerText = r.rule;
+            list.appendChild(item);
+        });
+        var timeout;
+        password.addEventListener('keydown', (e) => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                warning.innerHTML = '';
+                let warnings = [];
+                rules.forEach((r) => {
+                    const w = r.warning || r.rule;
+                    if (!r.re.test(password.value)) warnings.push(w);
+                });
+                warning.innerText = warnings.join(' and ');
+            }, 100);
+        });
+        password.focus();
+    </script>
+</body>
+
+</html>

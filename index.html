@@ -73,7 +73,7 @@
                 const specialChars = /[`~!@#$%^&*()-_=+[{\]}|;:'"/?.>,< \\]/.test(password.value) ? 33 : 0;
                 const depth = lowerCase + upperCase + digits + specialChars;
                 searchDepth.value = depth;
-                combos.value = Math.pow(depth, length);
+                combos.value = Math.pow(depth, passwordLength);
             }, 100);
         });
         password.focus();

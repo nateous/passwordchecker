@@ -69,9 +69,9 @@
         var timeout;
         password.addEventListener("keyup", e => {
             clearTimeout(timeout);
-            warning.innerHTML = searchLength.value = searchDepth.value = combos.value = time.value = "";
             if(!password.value) return;
             timeout = setTimeout(() => {
+                warning.innerHTML = searchLength.value = searchDepth.value = combos.value = time.value = "";
                 let warnings = [];
                 rules.forEach(r => {
                     const w = r.warning || r.rule;

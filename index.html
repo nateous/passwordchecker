@@ -15,17 +15,27 @@
             <input type="password" id="password">
             <span id="warning"></span>
         </label>
+        <label>
+            <span>Search Depth: </span>
+            <input id="depth" type="text" readonly />
+        </label>
+        <label>
+            <span>Search Length: </span>
+            <input id="length" type="text" readonly />
+        </label>
         <ul id="list"></ul>
     </div>
     <script type="text/javascript">
         var password = document.getElementById('password');
+        var searchDepth = document.getElementById('depth');
+        var searchLength = document.getElementById('length');
         var list = document.getElementById('list');
         var warning = document.getElementById('warning');
         var rules = [
-            { re: /asdf/, rule: 'must contain "asdf"', warning: 'only passwords that have "asdf" are really secure' },
-            { re: /.{8,}/, rule: 'must be at least 8 characters long' },
-            { re: /(?:.*\d.*){3,}/, rule: 'must contain at least 3 digits' },
-            { re: /(?:.*[!@#$%^&*].*){2,}/, rule: 'must contain at least 2 special characters (!@#$%^&*)' }
+            //{ re: /asdf/, rule: 'must contain "asdf"', warning: 'only passwords that have "asdf" are really secure' },
+            //{ re: /.{8,}/, rule: 'must be at least 8 characters long' },
+            //{ re: /(?:.*\d.*){3,}/, rule: 'must contain at least 3 digits' },
+            //{ re: /(?:.*[!@#$%^&*].*){2,}/, rule: 'must contain at least 2 special characters (!@#$%^&*)' }
         ];
         rules.forEach((r) => {
             let item = document.createElement('li');
@@ -44,6 +54,11 @@
                     if (!r.re.test(password.value)) warnings.push(w);
                 });
                 warning.innerText = warnings.join(' and ');
+                
+                const passwordLength = password.value.length;
+                searchLength.value = passwordLength;
+                const lowerCase = /a-z/.test(password.value) || 0;
+                searchDepth.value = lowerCase + upperCase + digits + specialChars;
             }, 100);
         });
         password.focus();

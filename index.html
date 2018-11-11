@@ -32,15 +32,28 @@
                 <span>Combinations: </span> <input id="combos" type="text" readonly />
             </label>
         </div>
+        <div>
+            <label>
+                <span>Guesses per second: </span> <input id="guesses" type="number" value="100" />
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Time to crack in years: </span> <input id="time" type="text" readonly />
+            </label>
+        </div>
         <ul id="list"></ul>
     </div>
     <script type="text/javascript">
-        var password = document.getElementById("password");
-        var searchDepth = document.getElementById("depth");
-        var searchLength = document.getElementById("length");
-        var combos = document.getElementById("combos");
-        var list = document.getElementById("list");
-        var warning = document.getElementById("warning");
+        const $ = id => document.getElementById(id);
+        var password = $("password");
+        var searchDepth = $("depth");
+        var searchLength = $("length");
+        var combos = $("combos");
+        var guesses = $("guesses");
+        var time = $("time");
+        var list = $("list");
+        var warning = $("warning");
         var rules = [
             //{ re: /asdf/, rule: 'must contain "asdf"', warning: 'only passwords that have "asdf" are really secure' },
             //{ re: /.{8,}/, rule: 'must be at least 8 characters long' },
@@ -73,7 +86,11 @@
                 const specialChars = /[`~!@#$%^&*()-_=+[{\]}|;:'"/?.>,< \\]/.test(password.value) ? 33 : 0;
                 const depth = lowerCase + upperCase + digits + specialChars;
                 searchDepth.value = depth;
-                combos.value = Math.pow(depth, passwordLength);
+                const combinationsCount = Math.pow(depth, passwordLength);
+                combos.value = combinationsCount;
+                const guessesPerSecond = parseInt(guesses.value || 0, 10);
+                const guessesPerYear = guessesPerSecond * 60 * 24 * 365;
+                time.value = combinationsCount / guessesPerYear;
             }, 100);
         });
         password.focus();

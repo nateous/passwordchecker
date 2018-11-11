@@ -1,76 +1,83 @@
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
     <title>Password Checker</title>
-  </head>
-  <body>
+</head>
+
+<body>
     <h1>Password Checker</h1>
     <h2>Enter password below:</h2>
     <div id="container">
-      <div>
-        <label>
-          <input type="password" id="password" /> <span id="warning"></span>
-        </label>
-      </div>
-      <div>
-        <label>
-          <span>Search Depth: </span> <input id="depth" type="text" readonly />
-        </label>
-      </div>
-      <div>
-        <label>
-          <span>Search Length: </span>
-          <input id="length" type="text" readonly />
-        </label>
-      </div>
-      <ul id="list"></ul>
+        <div>
+            <label>
+                <input type="password" id="password" /> <span id="warning"></span>
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Search Depth: </span> <input id="depth" type="text" readonly />
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Search Length: </span>
+                <input id="length" type="text" readonly />
+            </label>
+        </div>
+        <div>
+            <label>
+                <span>Combinations: </span> <input id="combos" type="text" readonly />
+            </label>
+        </div>
+        <ul id="list"></ul>
     </div>
     <script type="text/javascript">
-      var password = document.getElementById("password");
-      var searchDepth = document.getElementById("depth");
-      var searchLength = document.getElementById("length");
-      var list = document.getElementById("list");
-      var warning = document.getElementById("warning");
-      var rules = [
-        //{ re: /asdf/, rule: 'must contain "asdf"', warning: 'only passwords that have "asdf" are really secure' },
-        //{ re: /.{8,}/, rule: 'must be at least 8 characters long' },
-        //{ re: /(?:.*\d.*){3,}/, rule: 'must contain at least 3 digits' },
-        //{ re: /(?:.*[!@#$%^&*].*){2,}/, rule: 'must contain at least 2 special characters (!@#$%^&*)' }
-      ];
-      rules.forEach(r => {
-        let item = document.createElement("li");
-        item.classList.add("item");
-        item.innerText = r.rule;
-        list.appendChild(item);
-      });
-      var timeout;
-      password.addEventListener("keydown", e => {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => {
-          warning.innerHTML = "";
-          let warnings = [];
-          rules.forEach(r => {
-            const w = r.warning || r.rule;
-            if (!r.re.test(password.value)) warnings.push(w);
-          });
-          warning.innerText = warnings.join(" and ");
+        var password = document.getElementById("password");
+        var searchDepth = document.getElementById("depth");
+        var searchLength = document.getElementById("length");
+        var combos = document.getElementById("combos");
+        var list = document.getElementById("list");
+        var warning = document.getElementById("warning");
+        var rules = [
+            //{ re: /asdf/, rule: 'must contain "asdf"', warning: 'only passwords that have "asdf" are really secure' },
+            //{ re: /.{8,}/, rule: 'must be at least 8 characters long' },
+            //{ re: /(?:.*\d.*){3,}/, rule: 'must contain at least 3 digits' },
+            //{ re: /(?:.*[!@#$%^&*].*){2,}/, rule: 'must contain at least 2 special characters (!@#$%^&*)' }
+        ];
+        rules.forEach(r => {
+            let item = document.createElement("li");
+            item.classList.add("item");
+            item.innerText = r.rule;
+            list.appendChild(item);
+        });
+        var timeout;
+        password.addEventListener("keydown", e => {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                warning.innerHTML = "";
+                let warnings = [];
+                rules.forEach(r => {
+                    const w = r.warning || r.rule;
+                    if (!r.re.test(password.value)) warnings.push(w);
+                });
+                warning.innerText = warnings.join(" and ");
 
-          const passwordLength = password.value.length;
-          searchLength.value = passwordLength;
-          const lowerCase = /[a-z]/.test(password.value) ? 26 : 0;
-          const upperCase = /[A-Z]/.test(password.value) ? 26 : 0;
-          const digits = /\d/.test(password.value) ? 10 : 0;
-          const specialChars = /[`~!@#$%^&*()-_=+[{\]}|;:'"/?.>,< \\]/.test(
-            password.value
-          )
-            ? 33
-            : 0;
-          searchDepth.value = lowerCase + upperCase + digits + specialChars;
-        }, 100);
-      });
-      password.focus();
+                const passwordLength = password.value.length;
+                searchLength.value = passwordLength;
+                const lowerCase = /[a-z]/.test(password.value) ? 26 : 0;
+                const upperCase = /[A-Z]/.test(password.value) ? 26 : 0;
+                const digits = /\d/.test(password.value) ? 10 : 0;
+                const specialChars = /[`~!@#$%^&*()-_=+[{\]}|;:'"/?.>,< \\]/.test(password.value) ? 33 : 0;
+                const depth = lowerCase + upperCase + digits + specialChars;
+                searchDepth.value = depth;
+                combos.value = Math.pow(depth, length);
+            }, 100);
+        });
+        password.focus();
     </script>
-  </body>
+</body>
+
 </html>
